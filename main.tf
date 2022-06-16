@@ -60,7 +60,6 @@ resource "aws_instance" "web" {
       "touch /home/ubuntu/mysqlIP.txt",
       "echo '${aws_instance.mysql.public_ip}' > mysqlIP.txt",
       "curl http://checkip.amazonaws.com > thisIP.txt",
-      "sudo nohup /home/ubuntu/code/boxes/boxesCPlus/dist/Debug/GNU-Linux/boxescplus &"
     ]
   }
 
