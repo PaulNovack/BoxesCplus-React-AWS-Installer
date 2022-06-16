@@ -24,3 +24,6 @@ To remove all aws instances: terraform destroy
     http://IP Address/
     
     </pre>
+
+There is a bug in the current react code you will have to log in twice till fixed.
+
