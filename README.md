@@ -16,9 +16,11 @@ To run;  terraform apply
 To remove all aws instances: terraform destroy
 
 ### After running the installer look at the IP address output by installer you should he able to access:
-
+<pre>
   - ec2_web_ip      = [
       - "IP Address",
     ] 
     
     http://IP Address/
+    
+    </pre>
