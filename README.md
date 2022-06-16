@@ -2,7 +2,7 @@
 
 ### Requires configured AWS CLI and Terraform installed
 
-### This is an example only in a real world installer you would NEVER put the private public key in code that is checked into github it would be in a terraform var file.
+### This is an example only. In a real world installer you would NEVER put the private and public key to access server in code that is checked into github it would be in a terraform var file. In real world never leave port 3306 or 33060 open to world (0.0.0.0)
 
 This will install and configure 2 ec2 instances
 
@@ -29,3 +29,13 @@ To remove all aws instances: terraform destroy
 
 There is a bug in the current react code you will have to log in twice till fixed.
 
+After running set up web server can be started with:
+
+sudo /home/ubuntu/code/boxes/boxesCPlus/dist/Debug/GNU-Linux/boxescplus </dev/null &>/dev/null & 
+
+The web server will be tagged in AWS consoler with "Ubuntu MySQLCPPConnector Boxes Server" can be connected to with simply "connect" in browser in AWS console.
+
+Should be able to see login screen at base url
+
+
+![RunningApplication](https://user-images.githubusercontent.com/3844301/174111335-f4437aca-fbb1-4ea2-959c-a0bf2da9b0b4.png)
