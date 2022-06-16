@@ -1,6 +1,8 @@
 # BoxesCplus-React-AWS-Installer
 
-### requires configured AWS CLI and Terraform installed
+### Requires configured AWS CLI and Terraform installed
+
+### This is an example only in a real world installer you would NEVER put the private public key in code that is checked into github it would be in a terraform var file.
 
 This will install and configure 2 ec2 instances
 
