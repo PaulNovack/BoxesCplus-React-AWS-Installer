@@ -37,6 +37,7 @@ sudo apt install nodejs -y
 sudo npm install -g npm@latest -y
 npm update
 npm run build > /dev/null 2>&1
+sudo /home/ubuntu/code/boxes/boxesCPlus/dist/Debug/GNU-Linux/boxescplus </dev/null &>/dev/null &
 
 
 

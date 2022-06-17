@@ -16,11 +16,18 @@ provider "aws" {
 }
 
 # Create a VPC
-resource "aws_vpc" "example" {
+resource "aws_vpc" "BoxesVPC" {
   cidr_block = "10.0.0.0/16"
     tags = {
       Name = "BoxesTerraformVPC"
     }
+}
+
+resource "aws_vpc" "BoxesVPCInternal" {
+  cidr_block = "172.32.0.0/16"
+  tags = {
+    Name = "BoxesTerraformVPCInternal"
+  }
 }
 
 data "aws_ami" "ubuntu" {
@@ -55,11 +62,11 @@ resource "aws_instance" "web" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/boxesCPlus.sh",
-      "/home/ubuntu/boxesCPlus.sh args",
       "touch /home/ubuntu/mysqlIP.txt",
-      "echo '${aws_instance.mysql.public_ip}' > mysqlIP.txt",
+      "echo '${aws_instance.mysql.private_ip}' > mysqlIP.txt",
       "curl http://checkip.amazonaws.com > thisIP.txt",
+      "chmod +x /home/ubuntu/boxesCPlus.sh",
+      "/home/ubuntu/boxesCPlus.sh args"
     ]
   }
 
@@ -83,7 +90,7 @@ resource "aws_instance" "mysql" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   key_name               = "terraform_key"
-  vpc_security_group_ids = [aws_security_group.main.id]
+  vpc_security_group_ids = [aws_security_group.main.id,aws_security_group.private-admin.id]
 
   provisioner "file" {
     source      = "mysqlSetup.sh"
@@ -120,14 +127,14 @@ locals {
   ports_in = [
     443,
     80,
-    22,
-    3306,
-    33060
+    22
   ]
   ports_out = [
     0
   ]
 }
+
+
 
 resource "aws_security_group" "main" {
 
@@ -160,6 +167,32 @@ resource "aws_security_group" "main" {
 
   }
 }
+
+resource "aws_security_group" "private-admin" {
+  tags = {
+    Name = "private_restricted"
+  }
+  name = "private_restricted_group"
+  description = "private mysql accessors group"
+
+  ingress {
+    name = "mysql standard port 3306"
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16", "136.62.3.73/32","172.31.0.0/16"]
+  }
+
+  ingress {
+    name = "mysql devX port 33060"
+    from_port = 33060
+    to_port = 33060
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16", "136.62.3.73/32","172.31.0.0/16"]
+  }
+
+}
+
 resource "aws_key_pair" "deployer" {
   key_name   = "terraform_key"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD8OBxSLEtZ/EZds4WbvdzAOq52fD3NE+ZjzYEWAkD2PgZuTyZ7b8XSyu+qwPxkeoC16a/KQvzpi/fvdGmw2Gyzt6fPvr9xcClDGjGt8L8ETYjsZi4KA2nAyB+1ruhiPTuXeht37B5dfbBwfo8YeYzo/ZgwXPirHsNMnOf43Axohg5O1qCSZ1NAiV5RarH8fS4BQE3LWI8tmxGJnHAfuiuGviwmrR9urYWyltAjDJ8ok2/T0/KDdHj8aUXyo1GNQzCbgB3nFTz0cPccmacyUArhlvVkHzwSsWo0ynI2xp4K8BNIz5CERaQX79jJyiE1ktMjZbPJmSeGgkIlYIz1I49P pnovack@pnovack-Inspiron-7706-2n1"
@@ -173,7 +206,4 @@ output "ec2_mysql_ip" {
 output "ec2_web_ip" {
   value = aws_instance.web.*.public_ip
 }
-output "mysqlAttributes" {
-  value = aws_instance.mysql.public_ip
-}
-# Get value after Script "terraform output -json ec2_mysql_ip | jq .[]"
+# after Script "terraform output -json ec2_mysql_ip | jq .[]"
