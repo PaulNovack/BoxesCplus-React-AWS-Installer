@@ -35,7 +35,7 @@ sudo /home/ubuntu/code/boxes/boxesCPlus/dist/Debug/GNU-Linux/boxescplus </dev/nu
 
 The web server will be tagged in AWS consoler with "Ubuntu MySQLCPPConnector Boxes Server" can be connected to with simply "connect" in browser in AWS console.
 
-Should be able to see login screen at base url
+Should be able to see login screen at base url after starting the web server.
 
 
 ![RunningApplication](https://user-images.githubusercontent.com/3844301/174111335-f4437aca-fbb1-4ea2-959c-a0bf2da9b0b4.png)
