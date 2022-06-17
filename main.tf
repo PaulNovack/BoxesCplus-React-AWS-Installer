@@ -176,7 +176,6 @@ resource "aws_security_group" "private-admin" {
   description = "private mysql accessors group"
 
   ingress {
-    name = "mysql standard port 3306"
     from_port = 3306
     to_port = 3306
     protocol = "tcp"
@@ -184,12 +183,24 @@ resource "aws_security_group" "private-admin" {
   }
 
   ingress {
-    name = "mysql devX port 33060"
     from_port = 33060
     to_port = 33060
     protocol = "tcp"
     cidr_blocks = ["10.0.0.0/16", "136.62.3.73/32","172.31.0.0/16"]
   }
+  egress = [
+    {
+      cidr_blocks      = ["0.0.0.0/0", ]
+      description      = ""
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+    }
+  ]
 
 }
 

@@ -2,7 +2,7 @@
 
 ### Requires configured AWS CLI and Terraform installed
 
-### This is an example only. In a real world installer you would NEVER put the private and public key to access server in code that is checked into github it would be in a terraform var file. In real world never leave port 3306 or 33060 open to world (0.0.0.0)
+### This is an example only. In a real world installer you would NEVER put the private and public key to access server in code that is checked into github it would be in a terraform var file.
 
 This will install and configure 2 ec2 instances
 
